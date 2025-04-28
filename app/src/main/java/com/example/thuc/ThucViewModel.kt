@@ -1,4 +1,6 @@
 package com.example.thuc
 
-class ThucViewModel {
+import androidx.lifecycle.ViewModel
+
+class ThucViewModel(private val thucRepository: ThucRepository): ViewModel() {
 }
