@@ -36,9 +36,6 @@ fun QuoteScreen(modifier: Modifier = Modifier){
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
-        TopAppBar(
-            title = { Text(text = "Quote") }
-        )
         Quotes(quotes = quotes, modifier = Modifier)
     }
 }

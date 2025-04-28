@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.example.thuc.data.ScreenType
 import com.example.thuc.ui.theme.ThucTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ThucApp() {
     var currentScreen: ScreenType by remember { mutableStateOf(ScreenType.Alarm) }
@@ -50,7 +51,17 @@ fun ThucApp() {
     )
 
     Scaffold (
-        bottomBar = {ThucAppBottomBar(
+        topBar = {
+            TopAppBar(
+                title =
+                {
+                    Text(text = currentScreen.name,)
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer)
+            )
+        },
+        bottomBar = {
+            ThucAppBottomBar(
             navigationItemContentList = navigationItemContentList,
             onClick = {current -> currentScreen = current},
             currentScreenType = currentScreen
