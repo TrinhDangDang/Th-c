@@ -24,7 +24,7 @@ abstract class ThucDatabase : RoomDatabase() {
         fun getDatabase(context: Context): ThucDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, ThucDatabase::class.java, "thuc_database")
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(false)
                     .build()
                     .also { Instance = it }
             }

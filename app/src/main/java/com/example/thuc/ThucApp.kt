@@ -55,7 +55,7 @@ fun ThucApp() {
             TopAppBar(
                 title =
                 {
-                    Text(text = currentScreen.name,)
+                    Text(text = "Thuc",)
                 },
                 colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer)
             )
