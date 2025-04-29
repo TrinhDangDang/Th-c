@@ -2,6 +2,7 @@ package com.example.thuc
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,6 +45,7 @@ fun QuoteScreen(modifier: Modifier = Modifier){
 @Composable
 fun Quotes(modifier: Modifier = Modifier, quotes: List<Quote>){
     LazyColumn(
+        contentPadding = PaddingValues(top = 16.dp, start = 8.dp, end = 8.dp, bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.padding(8.dp)
     ) {

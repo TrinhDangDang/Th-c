@@ -1,6 +1,5 @@
 package com.example.thuc
 
-import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,15 +19,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.thuc.data.Screen
 import com.example.thuc.ui.theme.ThucTheme
 
 @Composable
-fun AlarmScreen(modifier: Modifier = Modifier){
+fun AlarmScreen(modifier: Modifier = Modifier, navController: NavController){
     val alarms = listOf("Alarm 1", "Alarm 2", "Alarm 3", "Alarm 4")
     Column(
         modifier = modifier
@@ -49,7 +52,7 @@ fun AlarmScreen(modifier: Modifier = Modifier){
                 .verticalScroll(rememberScrollState())
         ) {
             alarms.forEach { alarm ->
-                AlarmItem(alarm)
+                AlarmItem(navController = navController, alarm)
             }
         }
 
@@ -100,8 +103,9 @@ fun HeaderContent() {
 //}
 
 @Composable
-fun AlarmItem(alarm: String, modifier: Modifier = Modifier) {
+fun AlarmItem(navController: NavController, alarm: String, modifier: Modifier = Modifier) {
     Card(
+        onClick = {navController.navigate(Screen.AlarmDetail.route)},
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp),
@@ -132,6 +136,6 @@ fun AlarmItem(alarm: String, modifier: Modifier = Modifier) {
 @Composable
 fun AlarmScreenPreview(){
     ThucTheme {
-        AlarmScreen()
+        AlarmScreen(navController = rememberNavController())
     }
 }

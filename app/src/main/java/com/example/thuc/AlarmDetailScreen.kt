@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -19,11 +20,13 @@ import androidx.compose.ui.unit.dp
 import com.example.thuc.ui.theme.ThucTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlarmDetailScreen() {
+fun AlarmDetailScreen(navController: NavController) {
     var selectedDays by remember { mutableStateOf(listOf<String>()) }
 
     Scaffold(
@@ -31,9 +34,9 @@ fun AlarmDetailScreen() {
             TopAppBar(
                 title = { Text("Edit Alarm", style = MaterialTheme.typography.headlineSmall) },
                 navigationIcon = {
-                    IconButton(onClick = { /* TODO: Handle back click */ }) {
+                    IconButton(onClick = {navController.popBackStack()}) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
                     }
@@ -156,6 +159,6 @@ fun DaySelectionRow(
 @Composable
 fun AlarmDetailPreview() {
     ThucTheme {
-        AlarmDetailScreen()
+        AlarmDetailScreen(navController = rememberNavController())
     }
 }

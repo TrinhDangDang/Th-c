@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.thuc.data.Screen
 import com.example.thuc.data.ScreenType
 import com.example.thuc.ui.theme.ThucTheme
 
@@ -32,6 +34,7 @@ import com.example.thuc.ui.theme.ThucTheme
 @Composable
 fun ThucApp() {
     var currentScreen: ScreenType by remember { mutableStateOf(ScreenType.Alarm) }
+    val navController = rememberNavController()
     val navigationItemContentList = listOf(
         NavigationItemContent(
             screenType = ScreenType.Alarm,
@@ -51,15 +54,15 @@ fun ThucApp() {
     )
 
     Scaffold (
-        topBar = {
-            TopAppBar(
-                title =
-                {
-                    Text(text = "Thuc",)
-                },
-                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer)
-            )
-        },
+//        topBar = {
+//            TopAppBar(
+//                title =
+//                {
+//                    Text(text = "Thức",)
+//                },
+//                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer)
+//            )
+//        },
         bottomBar = {
             ThucAppBottomBar(
             navigationItemContentList = navigationItemContentList,
@@ -69,25 +72,18 @@ fun ThucApp() {
         floatingActionButton = {
             if (currentScreen == ScreenType.Alarm){
                 FloatingActionButton(
-                    onClick = {}
+                    onClick = {navController.navigate(Screen.AlarmDetail.route)}
                 ) {
                     Icon(Icons.Filled.Add, "Floating action button.")
                 }
             }
         }
     ){ innerPadding ->
-        when(currentScreen){
-            ScreenType.Alarm -> AlarmScreen(
-                modifier = Modifier.fillMaxSize()
-                    .padding(innerPadding)
-            )
-            ScreenType.Quote -> QuoteScreen(
-                modifier = Modifier.fillMaxSize()
-                    .padding(innerPadding))
-            ScreenType.Setting -> SettingScreen(modifier = Modifier.fillMaxSize()
-                .padding(innerPadding))
-        }
-
+        ThucNavigation(
+            currentScreen = currentScreen,
+            modifier = Modifier.padding(innerPadding),
+            navController = navController
+        )
 
     }
 }

@@ -8,5 +8,6 @@ data class Alarm(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val time: String,
     val label: String,
+    val daysOfWeek: String,
     val isEnabled: Boolean = true
 )
