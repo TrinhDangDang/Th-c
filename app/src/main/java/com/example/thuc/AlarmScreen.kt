@@ -27,12 +27,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.thuc.data.Alarm
 import com.example.thuc.data.Screen
 import com.example.thuc.ui.theme.ThucTheme
 
 @Composable
-fun AlarmScreen(modifier: Modifier = Modifier, navController: NavController){
-    val alarms = listOf("Alarm 1", "Alarm 2", "Alarm 3", "Alarm 4")
+fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, uiState: UiState){
+    val sampleAlarms = listOf(
+        Alarm(id = 1, time = "07:00 AM", label = "Morning Workout", daysOfWeek = "MO,TU,WE,TH,FR"),
+        Alarm(id = 2, time = "08:30 AM", label = "Work Alarm", daysOfWeek = "MO,TU,WE,TH,FR"),
+        Alarm(id = 3, time = "09:00 AM", label = "Weekend Brunch", daysOfWeek = "SA,SU"),
+        Alarm(id = 4, time = "06:00 AM", label = "Early Run", daysOfWeek = "WE,FR"),
+        Alarm(id = 5, time = "10:00 PM", label = "Go to Bed", daysOfWeek = "MO,TU,WE,TH,FR,SA,SU"),
+        Alarm(id = 6, time = "12:00 PM", label = "Lunch Break", daysOfWeek = "MO,TU,WE,TH,FR"),
+    )
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -51,8 +60,8 @@ fun AlarmScreen(modifier: Modifier = Modifier, navController: NavController){
                 .weight(1f) // fill remaining space
                 .verticalScroll(rememberScrollState())
         ) {
-            alarms.forEach { alarm ->
-                AlarmItem(navController = navController, alarm)
+            sampleAlarms.forEach { alarm ->
+                AlarmItem(alarm = alarm, onAlarmClick = onAlarmClick)
             }
         }
 
@@ -76,36 +85,14 @@ fun HeaderContent() {
     }
 }
 
-//@Composable
-//fun MiniTopRow() {
-//    Surface(
-//        //tonalElevation = 4.dp,
-//        color = MaterialTheme.colorScheme.primaryContainer
-//    ) {
-//        Row(
-//            modifier = androidx.compose.ui.Modifier
-//                .fillMaxWidth()
-//                .height(56.dp)
-//                .padding(horizontal = 16.dp),
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.SpaceBetween
-//        ) {
-//            Text(
-//                text = "Thức",
-//                style = MaterialTheme.typography.titleLarge,
-//                color = MaterialTheme.colorScheme.onPrimaryContainer
-//            )
-////            IconButton(onClick = { /* TODO: add new alarm */ }) {
-////                Icon(Icons.Default.Add, contentDescription = "Add Alarm", tint = MaterialTheme.colorScheme.onPrimaryContainer)
-////            }
-//        }
-//    }
-//}
 
 @Composable
-fun AlarmItem(navController: NavController, alarm: String, modifier: Modifier = Modifier) {
+fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit) {
     Card(
-        onClick = {navController.navigate(Screen.AlarmDetail.route)},
+        onClick = {
+            onAlarmClick(alarm)
+            //navController.navigate(Screen.AlarmDetail.route)
+                  },
         modifier = modifier
             .fillMaxSize()
             .padding(8.dp),
@@ -117,13 +104,15 @@ fun AlarmItem(navController: NavController, alarm: String, modifier: Modifier = 
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = alarm,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Text(
-                text = "date",
-            )
+            Column {
+                Text(
+                    text = alarm.label,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Text(alarm.time)
+            }
+
+
             Switch(
                 checked = true,
                 onCheckedChange = {  }
@@ -136,6 +125,6 @@ fun AlarmItem(navController: NavController, alarm: String, modifier: Modifier = 
 @Composable
 fun AlarmScreenPreview(){
     ThucTheme {
-        AlarmScreen(navController = rememberNavController())
+        //AlarmScreen()
     }
 }

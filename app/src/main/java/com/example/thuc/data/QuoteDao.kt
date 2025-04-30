@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface QuoteDao {
 
     @Query("SELECT * FROM quotes")
-    fun getAllQuotes(): Flow<Quote>
+    fun getAllQuotes(): Flow<List<Quote>>
 
     @Insert
     suspend fun insertQuote(quote: Quote)

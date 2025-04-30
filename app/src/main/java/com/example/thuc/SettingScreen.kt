@@ -19,7 +19,7 @@ import com.example.thuc.ui.theme.ThucTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun SettingScreen(modifier: Modifier = Modifier, onAboutClick: () -> Unit) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -30,7 +30,7 @@ fun SettingScreen(modifier: Modifier = Modifier, navController: NavController) {
         SettingItem(title = "Enable Notifications", onClick = { /* TODO: Toggle notifications */ })
         SettingItem(title = "DarkTheme", onClick = { /* TODO: Open theme selector */ })
         //SettingItem(title = "Default Alarm Sound", onClick = { /* TODO: Choose alarm sound */ })
-        SettingItem(title = "About Thức", onClick = { navController.navigate(route = Screen.AboutThuc.route)})
+        SettingItem(title = "About Thức", onClick = onAboutClick)
     }
 }
 
@@ -68,11 +68,11 @@ fun SettingItem(title: String, onClick: () -> Unit) {
 @Composable
 fun SettingScreenPreview() {
     ThucTheme { // Wrap inside your app's theme for correct colors
-        SettingScreen(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            navController = rememberNavController()
-        )
+//        SettingScreen(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp),
+//            //navController = rememberNavController()
+//        )
     }
 }

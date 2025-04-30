@@ -2,43 +2,52 @@ package com.example.thuc
 
 import android.app.TimePickerDialog
 import android.content.Context
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.thuc.data.Alarm
 import com.example.thuc.ui.theme.ThucTheme
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlarmDetailScreen(navController: NavController) {
-    var selectedDays by remember { mutableStateOf(listOf<String>()) }
+fun AlarmDetailScreen(
+    onBackClick: () -> Unit,
+    alarmLabel: String,
+    uiState: UiState,
+    onSaveAlarm: (Alarm) -> Unit
+) {
+    val currentAlarm = if (alarmLabel == "default") {
+        Alarm(time = "07:00 AM", label = "New Alarm", daysOfWeek = "")
+    } else {
+        uiState.currentSelectedAlarm ?: Alarm(time = "07:00 AM", label = "New Alarm", daysOfWeek = "")
+    }
+
+    var label by remember { mutableStateOf(currentAlarm.label) }
+    var time by remember { mutableStateOf(currentAlarm.time) }
+    var selectedDays by remember {
+        mutableStateOf(currentAlarm.daysOfWeek.split(",").filter { it.isNotBlank() })
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Alarm", style = MaterialTheme.typography.headlineSmall) },
+                title = {
+                    Text(
+                        if (currentAlarm.label == "New Alarm") "New Alarm" else "Edit Alarm",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                },
                 navigationIcon = {
-                    IconButton(onClick = {navController.popBackStack()}) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -51,11 +60,11 @@ fun AlarmDetailScreen(navController: NavController) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TimePickerDemo()
+            TimePickerDemo(timeText = time, onTimeChange = { time = it })
 
             OutlinedTextField(
-                value = "Wake up",
-                onValueChange = {},
+                value = label,
+                onValueChange = { label = it },
                 label = { Text("Label") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -74,7 +83,16 @@ fun AlarmDetailScreen(navController: NavController) {
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { /* TODO: Save alarm changes */ },
+                onClick = {
+                    val updatedAlarm = Alarm(
+                        id = currentAlarm.id,
+                        time = time,
+                        label = label,
+                        daysOfWeek = selectedDays.joinToString(","),
+                        isEnabled = currentAlarm.isEnabled
+                    )
+                    onSaveAlarm(updatedAlarm)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
@@ -86,31 +104,25 @@ fun AlarmDetailScreen(navController: NavController) {
 }
 
 @Composable
-fun TimePickerDemo() {
-    var timeText by remember { mutableStateOf("07:30 AM") }
-
+fun TimePickerDemo(timeText: String, onTimeChange: (String) -> Unit) {
     val context = LocalContext.current
+
     OutlinedTextField(
         value = timeText,
-        onValueChange = {}, // No manual editing
+        onValueChange = {}, // still read-only
         label = { Text("Time") },
         modifier = Modifier.fillMaxWidth(),
-        readOnly = true, // Important: make field read-only
-        enabled = true,
-        singleLine = true,
+        readOnly = true,
         trailingIcon = {
-            IconButton(onClick = { showTimePicker(context) { newTime -> timeText = newTime } }) {
-                Icon(
-                    imageVector = Icons.Default.AccessTime,
-                    contentDescription = "Pick Time"
-                )
+            IconButton(onClick = {
+                showTimePicker(context) { newTime -> onTimeChange(newTime) }
+            }) {
+                Icon(imageVector = Icons.Default.AccessTime, contentDescription = "Pick Time")
             }
-
         }
     )
 }
 
-// ✅ Move this OUTSIDE too
 fun showTimePicker(context: Context, onTimeSelected: (String) -> Unit) {
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -126,7 +138,7 @@ fun showTimePicker(context: Context, onTimeSelected: (String) -> Unit) {
         },
         hour,
         minute,
-        false // 12-hour format
+        false
     ).show()
 }
 
@@ -138,12 +150,9 @@ fun DaySelectionRow(
     val allDays = listOf("MO", "TU", "WE", "TH", "FR", "SA", "SU")
     Column {
         Text("Days of week")
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             allDays.forEach { day ->
-                val isSelected = selectedDays.contains(day)
-
+                val isSelected = day in selectedDays
                 FilterChip(
                     selected = isSelected,
                     onClick = { onDayToggle(day) },
@@ -152,13 +161,17 @@ fun DaySelectionRow(
             }
         }
     }
-
-
 }
+
 @Preview(showBackground = true)
 @Composable
 fun AlarmDetailPreview() {
     ThucTheme {
-        AlarmDetailScreen(navController = rememberNavController())
+        AlarmDetailScreen(
+            onBackClick = {},
+            alarmLabel = "default",
+            uiState = UiState(),
+            onSaveAlarm = {}
+        )
     }
 }

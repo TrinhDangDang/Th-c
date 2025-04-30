@@ -7,6 +7,8 @@ interface ThucRepository {
     // Alarms
     fun getAlarmsStream(): Flow<List<Alarm>>
 
+//    fun getAlarmByLabel(alarmLabel: String): Flow<Alarm>
+
     suspend fun insertAlarm(alarm: Alarm)
 
     suspend fun updateAlarm(alarm: Alarm)

@@ -22,14 +22,14 @@ import com.example.thuc.ui.theme.ThucTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
-    navController: NavHostController
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("About", style = MaterialTheme.typography.headlineSmall) },
                 navigationIcon = {
-                    IconButton(onClick = {navController.popBackStack()}) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -79,6 +79,6 @@ fun AboutScreen(
 @Composable
 fun AboutScreenPreview() {
     ThucTheme {
-        AboutScreen(navController = rememberNavController())
+        //AboutScreen(navController = rememberNavController())
     }
 }

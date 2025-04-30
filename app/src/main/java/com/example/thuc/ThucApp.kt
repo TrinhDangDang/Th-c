@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.thuc.data.Screen
 import com.example.thuc.data.ScreenType
@@ -32,9 +35,14 @@ import com.example.thuc.ui.theme.ThucTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ThucApp() {
+fun ThucApp(thucViewModel: ThucViewModel = viewModel(factory = ThucViewModel.Factory)) {
+
     var currentScreen: ScreenType by remember { mutableStateOf(ScreenType.Alarm) }
     val navController = rememberNavController()
+    val uiState = thucViewModel.uiState.collectAsState().value
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     val navigationItemContentList = listOf(
         NavigationItemContent(
             screenType = ScreenType.Alarm,
@@ -54,15 +62,6 @@ fun ThucApp() {
     )
 
     Scaffold (
-//        topBar = {
-//            TopAppBar(
-//                title =
-//                {
-//                    Text(text = "Thức",)
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer)
-//            )
-//        },
         bottomBar = {
             ThucAppBottomBar(
             navigationItemContentList = navigationItemContentList,
@@ -70,9 +69,9 @@ fun ThucApp() {
             currentScreenType = currentScreen
         )},
         floatingActionButton = {
-            if (currentScreen == ScreenType.Alarm){
+            if (currentRoute == Screen.Main.route && currentScreen == ScreenType.Alarm){
                 FloatingActionButton(
-                    onClick = {navController.navigate(Screen.AlarmDetail.route)}
+                    onClick = {navController.navigate("${Screen.AlarmDetail.route}/default")}
                 ) {
                     Icon(Icons.Filled.Add, "Floating action button.")
                 }
@@ -81,8 +80,9 @@ fun ThucApp() {
     ){ innerPadding ->
         ThucNavigation(
             currentScreen = currentScreen,
+            navController = navController,
+            thucViewModel = thucViewModel,
             modifier = Modifier.padding(innerPadding),
-            navController = navController
         )
 
     }
@@ -114,6 +114,6 @@ data class NavigationItemContent(
 @Composable
 fun ThucAppPreview() {
     ThucTheme {
-        ThucApp()
+        ThucApp(thucViewModel = viewModel())
     }
 }
