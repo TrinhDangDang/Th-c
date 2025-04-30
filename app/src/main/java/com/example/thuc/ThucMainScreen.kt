@@ -14,7 +14,9 @@ fun ThucMainScreen(
     onAlarmClick: (Alarm) -> Unit,
     onAboutClick: () -> Unit,
     currentScreen: ScreenType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDarkTheme: Boolean,
+    onDarkThemeClick: (Boolean) -> Unit
 ) {
     when (currentScreen) {
         ScreenType.Alarm -> AlarmScreen(
@@ -30,7 +32,9 @@ fun ThucMainScreen(
         ScreenType.Setting -> SettingScreen(
             modifier = modifier
                 .fillMaxSize(),
-            onAboutClick = onAboutClick
+            onDarkThemeClick = onDarkThemeClick,
+            onAboutClick = onAboutClick,
+            isDarkTheme = isDarkTheme
         )
     }
 }

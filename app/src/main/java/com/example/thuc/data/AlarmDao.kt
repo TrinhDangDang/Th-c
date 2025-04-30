@@ -13,8 +13,8 @@ interface AlarmDao {
     @Query("SELECT * FROM alarms")
     fun getAllAlarms(): Flow<List<Alarm>>
 
-//    @Query("SELECT * FROM alarms WHERE label = :alarmLabel")
-//    fun getAlarmByLabel(alarmLabel: String): Flow<Alarm>
+    @Query("SELECT * FROM alarms WHERE label = :alarmLabel")
+    fun getAlarmByLabel(alarmLabel: String): Alarm?
 
     @Insert
     suspend fun insertAlarm(alarm: Alarm)

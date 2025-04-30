@@ -1,7 +1,6 @@
 [versions]
 agp = "8.9.2"
 coreKtxVersion = "1.16.0"
-datastorePreferences = "1.1.5"
 gradle = "8.5.2"
 kotlin = "2.1.0"
 coreKtx = "1.16.0"
@@ -17,7 +16,6 @@ roomKtx = "2.7.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-ktx-v1150 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -33,15 +35,15 @@ import com.example.thuc.ui.theme.ThucTheme
 
 @Composable
 fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, uiState: UiState){
-    val sampleAlarms = listOf(
-        Alarm(id = 1, time = "07:00 AM", label = "Morning Workout", daysOfWeek = "MO,TU,WE,TH,FR"),
-        Alarm(id = 2, time = "08:30 AM", label = "Work Alarm", daysOfWeek = "MO,TU,WE,TH,FR"),
-        Alarm(id = 3, time = "09:00 AM", label = "Weekend Brunch", daysOfWeek = "SA,SU"),
-        Alarm(id = 4, time = "06:00 AM", label = "Early Run", daysOfWeek = "WE,FR"),
-        Alarm(id = 5, time = "10:00 PM", label = "Go to Bed", daysOfWeek = "MO,TU,WE,TH,FR,SA,SU"),
-        Alarm(id = 6, time = "12:00 PM", label = "Lunch Break", daysOfWeek = "MO,TU,WE,TH,FR"),
-    )
-
+//    val sampleAlarms = listOf(
+//        Alarm(id = 1, time = "07:00 AM", label = "Morning Workout", daysOfWeek = "MO,TU,WE,TH,FR"),
+//        Alarm(id = 2, time = "08:30 AM", label = "Work Alarm", daysOfWeek = "MO,TU,WE,TH,FR"),
+//        Alarm(id = 3, time = "09:00 AM", label = "Weekend Brunch", daysOfWeek = "SA,SU"),
+//        Alarm(id = 4, time = "06:00 AM", label = "Early Run", daysOfWeek = "WE,FR"),
+//        Alarm(id = 5, time = "10:00 PM", label = "Go to Bed", daysOfWeek = "MO,TU,WE,TH,FR,SA,SU"),
+//        Alarm(id = 6, time = "12:00 PM", label = "Lunch Break", daysOfWeek = "MO,TU,WE,TH,FR"),
+//    )
+    val alarms = uiState.alarms
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
@@ -50,17 +52,11 @@ fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, ui
     ) {
         HeaderContent()
 
-        // 2. Stuck MiniTopRow
-//        MiniTopRow()
 
-        // 3. Fixed Alarms List
-        Column(
-            modifier = androidx.compose.ui.Modifier
-                .fillMaxWidth()
-                .weight(1f) // fill remaining space
-                .verticalScroll(rememberScrollState())
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth().weight(1f)
         ) {
-            sampleAlarms.forEach { alarm ->
+            items(items = alarms) { alarm ->
                 AlarmItem(alarm = alarm, onAlarmClick = onAlarmClick)
             }
         }
@@ -114,7 +110,7 @@ fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm)
 
 
             Switch(
-                checked = true,
+                checked = alarm.isEnabled,
                 onCheckedChange = {  }
             )
         }
@@ -125,6 +121,14 @@ fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm)
 @Composable
 fun AlarmScreenPreview(){
     ThucTheme {
-        //AlarmScreen()
+        AlarmScreen(
+            uiState = UiState(
+                alarms = listOf(
+                    Alarm(time = "07:00 AM", label = "Workout", daysOfWeek = "MO,TU"),
+                    Alarm(time = "08:30 AM", label = "Work", daysOfWeek = "MO,TU,WE")
+                )
+            ),
+            onAlarmClick = {}
+        )
     }
 }

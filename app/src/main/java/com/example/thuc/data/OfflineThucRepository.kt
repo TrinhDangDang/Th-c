@@ -6,7 +6,7 @@ class OfflineThucRepository(private val alarmDao: AlarmDao, private val quoteDao
     // Alarms
     override fun getAlarmsStream(): Flow<List<Alarm>> = alarmDao.getAllAlarms()
 
-   // override fun getAlarmByLabel(alarmLabel: String): Flow<Alarm> = alarmDao.getAlarmByLabel(alarmLabel)
+    override suspend fun getAlarmByLabel(alarmLabel: String): Alarm? = alarmDao.getAlarmByLabel(alarmLabel)
 
     override suspend fun insertAlarm(alarm: Alarm) = alarmDao.insertAlarm(alarm)
 

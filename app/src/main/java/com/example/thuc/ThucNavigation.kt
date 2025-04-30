@@ -37,7 +37,11 @@ fun ThucNavigation(
                     //alarmLabel -> navController.navigate("${Screen.AlarmDetail.route}/${alarmLabel}")
                 onAboutClick = {
                     navController.navigate(Screen.AboutThuc.route)
-                }
+                },
+                onDarkThemeClick = { darkTheme ->
+                    thucViewModel.toggleDarkTheme(darkTheme)
+                },
+                isDarkTheme = thucViewModel.uiState.collectAsState().value.darkTheme
             )
         }
         val alarmRouteArgument = "alarmRoute"

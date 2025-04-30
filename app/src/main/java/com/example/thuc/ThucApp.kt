@@ -43,48 +43,50 @@ fun ThucApp(thucViewModel: ThucViewModel = viewModel(factory = ThucViewModel.Fac
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val navigationItemContentList = listOf(
-        NavigationItemContent(
-            screenType = ScreenType.Alarm,
-            icon = Icons.Default.Notifications,
-            text = "Alarm"
-        ),
-        NavigationItemContent(
-            screenType = ScreenType.Quote,
-            icon = Icons.Default.Star,
-            text = "Quote"
-        ),
-        NavigationItemContent(
-            screenType = ScreenType.Setting,
-            icon = Icons.Default.Settings,
-            text = "Setting"
+    ThucTheme(darkTheme = uiState.darkTheme) {
+        val navigationItemContentList = listOf(
+            NavigationItemContent(
+                screenType = ScreenType.Alarm,
+                icon = Icons.Default.Notifications,
+                text = "Alarm"
+            ),
+            NavigationItemContent(
+                screenType = ScreenType.Quote,
+                icon = Icons.Default.Star,
+                text = "Quote"
+            ),
+            NavigationItemContent(
+                screenType = ScreenType.Setting,
+                icon = Icons.Default.Settings,
+                text = "Setting"
+            )
         )
-    )
 
-    Scaffold (
-        bottomBar = {
-            ThucAppBottomBar(
-            navigationItemContentList = navigationItemContentList,
-            onClick = {current -> currentScreen = current},
-            currentScreenType = currentScreen
-        )},
-        floatingActionButton = {
-            if (currentRoute == Screen.Main.route && currentScreen == ScreenType.Alarm){
-                FloatingActionButton(
-                    onClick = {navController.navigate("${Screen.AlarmDetail.route}/default")}
-                ) {
-                    Icon(Icons.Filled.Add, "Floating action button.")
+        Scaffold (
+            bottomBar = {
+                ThucAppBottomBar(
+                    navigationItemContentList = navigationItemContentList,
+                    onClick = {current -> currentScreen = current},
+                    currentScreenType = currentScreen
+                )},
+            floatingActionButton = {
+                if (currentRoute == Screen.Main.route && currentScreen == ScreenType.Alarm){
+                    FloatingActionButton(
+                        onClick = {navController.navigate("${Screen.AlarmDetail.route}/default")}
+                    ) {
+                        Icon(Icons.Filled.Add, "Floating action button.")
+                    }
                 }
             }
-        }
-    ){ innerPadding ->
-        ThucNavigation(
-            currentScreen = currentScreen,
-            navController = navController,
-            thucViewModel = thucViewModel,
-            modifier = Modifier.padding(innerPadding),
-        )
+        ){ innerPadding ->
+            ThucNavigation(
+                currentScreen = currentScreen,
+                navController = navController,
+                thucViewModel = thucViewModel,
+                modifier = Modifier.padding(innerPadding),
+            )
 
+        }
     }
 }
 
