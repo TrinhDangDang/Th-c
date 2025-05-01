@@ -2,12 +2,14 @@ package com.example.thuc
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +24,8 @@ fun AlarmDetailScreen(
     onBackClick: () -> Unit,
     alarmLabel: String,
     uiState: UiState,
-    onSaveAlarm: (Alarm) -> Unit
+    onSaveAlarm: (Alarm) -> Unit,
+    onDeleteAlarm: (Alarm) -> Unit
 ) {
     val currentAlarm = if (alarmLabel == "default") {
         Alarm(time = "07:00 AM", label = "New Alarm", daysOfWeek = "")
@@ -30,6 +33,8 @@ fun AlarmDetailScreen(
         uiState.currentSelectedAlarm ?: Alarm(time = "07:00 AM", label = "New Alarm", daysOfWeek = "")
     }
 
+    val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
     var label by remember { mutableStateOf(currentAlarm.label) }
     var time by remember { mutableStateOf(currentAlarm.time) }
     var selectedDays by remember {
@@ -81,25 +86,103 @@ fun AlarmDetailScreen(
             )
 
             Spacer(modifier = Modifier.weight(1f))
+            if (alarmLabel == "default") {
+                // New alarm: Save button takes full width
+                Button(
+                    onClick = {
+                        if (label.isBlank()) {
+                            Toast.makeText(context, "Please enter a label", Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }
 
-            Button(
-                onClick = {
-                    val updatedAlarm = Alarm(
-                        id = currentAlarm.id,
-                        time = time,
-                        label = label,
-                        daysOfWeek = selectedDays.joinToString(","),
-                        isEnabled = currentAlarm.isEnabled
-                    )
-                    onSaveAlarm(updatedAlarm)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-            ) {
-                Text("Save")
+                        if (selectedDays.isEmpty()) {
+                            Toast.makeText(context, "Please select at least one day", Toast.LENGTH_SHORT).show()
+                            return@Button
+                        }
+                        val updatedAlarm = Alarm(
+                            id = currentAlarm.id,
+                            time = time,
+                            label = label,
+                            daysOfWeek = selectedDays.joinToString(","),
+                            isEnabled = currentAlarm.isEnabled
+                        )
+                        onSaveAlarm(updatedAlarm)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                ) {
+                    Text("Save")
+                }
+            } else {
+                // Editing: Show Save + Delete side-by-side
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            if (label.isBlank()) {
+                                Toast.makeText(context, "Please enter a label", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+
+                            if (selectedDays.isEmpty()) {
+                                Toast.makeText(context, "Please select at least one day", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
+                            val updatedAlarm = Alarm(
+                                id = currentAlarm.id,
+                                time = time,
+                                label = label,
+                                daysOfWeek = selectedDays.joinToString(","),
+                                isEnabled = currentAlarm.isEnabled
+                            )
+                            onSaveAlarm(updatedAlarm)
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp)
+                    ) {
+                        Text("Save")
+                    }
+
+                    TextButton(
+                        onClick = { showDialog = true },
+                        modifier = Modifier
+                            .height(56.dp)
+                            .align(Alignment.CenterVertically),
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Delete")
+                    }
+                }
             }
+
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Delete Alarm") },
+            text = { Text("Are you sure you want to delete this alarm?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDeleteAlarm(currentAlarm)
+                    onBackClick()
+                    showDialog = false
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 
@@ -171,7 +254,8 @@ fun AlarmDetailPreview() {
             onBackClick = {},
             alarmLabel = "default",
             uiState = UiState(),
-            onSaveAlarm = {}
+            onSaveAlarm = {},
+            onDeleteAlarm = {}
         )
     }
 }

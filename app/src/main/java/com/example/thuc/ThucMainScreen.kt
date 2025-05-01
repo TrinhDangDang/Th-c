@@ -16,7 +16,8 @@ fun ThucMainScreen(
     currentScreen: ScreenType,
     modifier: Modifier = Modifier,
     isDarkTheme: Boolean,
-    onDarkThemeClick: (Boolean) -> Unit
+    onDarkThemeClick: (Boolean) -> Unit,
+    onCheckedChange: (Alarm) -> Unit
 ) {
     when (currentScreen) {
         ScreenType.Alarm -> AlarmScreen(
@@ -24,6 +25,7 @@ fun ThucMainScreen(
             uiState = uiState,
             modifier = modifier
                 .fillMaxSize(),
+            onCheckedChange = onCheckedChange
         )
         ScreenType.Quote -> QuoteScreen(
             modifier = modifier

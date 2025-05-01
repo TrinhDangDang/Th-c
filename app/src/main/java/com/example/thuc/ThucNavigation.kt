@@ -41,7 +41,8 @@ fun ThucNavigation(
                 onDarkThemeClick = { darkTheme ->
                     thucViewModel.toggleDarkTheme(darkTheme)
                 },
-                isDarkTheme = thucViewModel.uiState.collectAsState().value.darkTheme
+                isDarkTheme = thucViewModel.uiState.collectAsState().value.darkTheme,
+                onCheckedChange = {alarm -> thucViewModel.toggleAlarm(alarm)}
             )
         }
         val alarmRouteArgument = "alarmRoute"
@@ -62,6 +63,9 @@ fun ThucNavigation(
                         thucViewModel.updateAlarm(alarm)
                     }
                     navController.popBackStack()
+                },
+                onDeleteAlarm = {
+                    alarm -> thucViewModel.deleteAlarm(alarm)
                 }
             )
         }

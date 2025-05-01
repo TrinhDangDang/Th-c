@@ -34,7 +34,7 @@ import com.example.thuc.data.Screen
 import com.example.thuc.ui.theme.ThucTheme
 
 @Composable
-fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, uiState: UiState){
+fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, uiState: UiState, onCheckedChange: (Alarm) -> Unit){
 //    val sampleAlarms = listOf(
 //        Alarm(id = 1, time = "07:00 AM", label = "Morning Workout", daysOfWeek = "MO,TU,WE,TH,FR"),
 //        Alarm(id = 2, time = "08:30 AM", label = "Work Alarm", daysOfWeek = "MO,TU,WE,TH,FR"),
@@ -57,7 +57,7 @@ fun AlarmScreen(modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, ui
             modifier = Modifier.fillMaxWidth().weight(1f)
         ) {
             items(items = alarms) { alarm ->
-                AlarmItem(alarm = alarm, onAlarmClick = onAlarmClick)
+                AlarmItem(alarm = alarm, onAlarmClick = onAlarmClick, onCheckedChange = onCheckedChange)
             }
         }
 
@@ -83,7 +83,7 @@ fun HeaderContent() {
 
 
 @Composable
-fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit) {
+fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm) -> Unit, onCheckedChange: (Alarm) -> Unit) {
     Card(
         onClick = {
             onAlarmClick(alarm)
@@ -111,7 +111,7 @@ fun AlarmItem(alarm: Alarm, modifier: Modifier = Modifier, onAlarmClick: (Alarm)
 
             Switch(
                 checked = alarm.isEnabled,
-                onCheckedChange = {  }
+                onCheckedChange = { onCheckedChange(alarm) }
             )
         }
     }
@@ -128,7 +128,8 @@ fun AlarmScreenPreview(){
                     Alarm(time = "08:30 AM", label = "Work", daysOfWeek = "MO,TU,WE")
                 )
             ),
-            onAlarmClick = {}
+            onAlarmClick = {},
+            onCheckedChange = {}
         )
     }
 }
