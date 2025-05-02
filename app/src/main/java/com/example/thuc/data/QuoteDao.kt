@@ -12,6 +12,9 @@ interface QuoteDao {
     @Query("SELECT * FROM quotes")
     fun getAllQuotes(): Flow<List<Quote>>
 
+    @Query("SELECT * FROM quotes WHERE text = :text LIMIT 1")
+    suspend fun getQuoteByText(text: String): Quote?
+
     @Insert
     suspend fun insertQuote(quote: Quote)
 

@@ -1,11 +1,15 @@
 package com.example.thuc
 
+import android.R.attr.action
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.thuc.data.Alarm
+import com.example.thuc.data.Quote
 import com.example.thuc.data.ScreenType
 
 @Composable
@@ -18,8 +22,10 @@ fun ThucMainScreen(
     isDarkTheme: Boolean,
     onDarkThemeClick: (Boolean) -> Unit,
     onCheckedChange: (Alarm) -> Unit,
-    onQuoteClick: () -> Unit
+    onQuoteButtonClick: (String) -> Unit,
+    onQuoteDelete: (Quote) -> Unit
 ) {
+    val context = LocalContext.current
     when (currentScreen) {
         ScreenType.Alarm -> AlarmScreen(
             onAlarmClick = {alarm -> onAlarmClick(alarm)},
@@ -30,7 +36,8 @@ fun ThucMainScreen(
         )
         ScreenType.Quote -> QuoteScreen(
             uiState = uiState,
-            onQuoteClick = onQuoteClick,
+            onQuoteButtonClick = {feeling -> onQuoteButtonClick(feeling)},
+            onQuoteDelete = {quote -> onQuoteDelete(quote)},
             modifier = modifier
                 .fillMaxSize()
         )
@@ -39,7 +46,14 @@ fun ThucMainScreen(
                 .fillMaxSize(),
             onDarkThemeClick = onDarkThemeClick,
             onAboutClick = onAboutClick,
-            isDarkTheme = isDarkTheme
+            isDarkTheme = isDarkTheme,
+            onNotificationClick = {
+                val intent = Intent().apply {
+                    action = android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                    putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+                }
+                context.startActivity(intent)
+            }
         )
     }
 }

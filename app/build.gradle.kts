@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.retrofit2.kotlinx.serialization.converter)
 
 
-
+    implementation("com.google.accompanist:accompanist-flowlayout:0.33.2-alpha")
 
 
     //Room

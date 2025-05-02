@@ -12,7 +12,7 @@ data class HFMessage(
 data class TogetherAIRequest(
     val model: String = "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
     val messages: List<HFMessage>,
-    val max_tokens: Int = 512
+    val max_tokens: Int = 1024
 )
 
 @Serializable

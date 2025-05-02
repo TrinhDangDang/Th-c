@@ -17,6 +17,8 @@ class OfflineThucRepository(private val alarmDao: AlarmDao, private val quoteDao
     // Quotes
     override fun getQuotesStream(): Flow<List<Quote>> = quoteDao.getAllQuotes()
 
+    override suspend fun getQuoteByText(text: String): Quote? = quoteDao.getQuoteByText(text)
+
     override suspend fun insertQuote(quote: Quote) = quoteDao.insertQuote(quote)
 
     override suspend fun deleteQuote(quote: Quote) = quoteDao.deleteQuote(quote)

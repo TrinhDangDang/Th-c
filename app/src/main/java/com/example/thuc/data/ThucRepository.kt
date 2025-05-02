@@ -18,6 +18,8 @@ interface ThucRepository {
     // Quotes
     fun getQuotesStream(): Flow<List<Quote>>
 
+    suspend fun getQuoteByText(text: String): Quote?
+
     suspend fun insertQuote(quote: Quote)
 
     suspend fun deleteQuote(quote: Quote)

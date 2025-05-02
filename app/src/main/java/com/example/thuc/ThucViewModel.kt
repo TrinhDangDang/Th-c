@@ -1,20 +1,18 @@
 package com.example.thuc
 
 import android.os.Build
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.thuc.data.Alarm
-import com.example.thuc.data.AlarmScheduler
+import com.example.thuc.ringgg.AlarmScheduler
 import com.example.thuc.data.Quote
 import com.example.thuc.data.ThucRepository
 import com.example.thuc.data.UserPreferenceRepository
-import com.example.thuc.data.getNextAlarmTimeInMillis
+import com.example.thuc.ringgg.getNextAlarmTimeInMillis
 import com.example.thuc.network.AIRepository
-import com.example.thuc.network.TogetherAIRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,12 +93,40 @@ class ThucViewModel(private val thucRepository: ThucRepository, private val user
         }
     }
 
+
+
+
     fun insertQuote(quote: Quote){
         viewModelScope.launch {
             thucRepository.insertQuote(quote)
         }
     }
 
+
+    fun getMotivationalQuote(feeling: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            //val randomSuffix = (1000..9999).random()
+            val quote = togetherAIRepository.getQuote(
+                "$feeling right now. Give me a random short inspirational quote that fits my mood. Only respond with the quote and the author's name in this format: \"Quote.\" — Author. No other text."
+            )
+
+            val existing = thucRepository.getQuoteByText(quote.text)
+            if (existing == null) {
+                insertQuote(Quote(text = quote.text, author = quote.author))
+                _uiState.value = _uiState.value.copy(quote = quote)
+            } else {
+                _toastMessage.emit("You already have this quote saved.")
+            }
+            _uiState.value = _uiState.value.copy(isLoading = false)
+        }
+    }
+
+    fun deleteQuote(quote: Quote){
+        viewModelScope.launch {
+            thucRepository.deleteQuote(quote)
+        }
+    }
     fun updateAlarm(alarm: Alarm){
         viewModelScope.launch {
             thucRepository.updateAlarm(alarm)
@@ -133,15 +159,6 @@ class ThucViewModel(private val thucRepository: ThucRepository, private val user
         }
     }
 
-    fun getMotivationalQuote() {
-        viewModelScope.launch {
-            val quote = togetherAIRepository.getQuote("Give me a motivational quote. make it short")
-            _uiState.value = _uiState.value.copy(quote = quote)
-            //insertQuote(Quote(text = quote))
-        }
-    }
-
-
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
         val Factory = viewModelFactory {
@@ -157,7 +174,8 @@ class ThucViewModel(private val thucRepository: ThucRepository, private val user
 }
 
 data class UiState(
-    val quote: String = "",
+    val quote: Quote? = null,
+    val isLoading: Boolean = false,
     val darkTheme: Boolean = true,
     val currentSelectedAlarm: Alarm? = null,
     val alarms: List<Alarm> = emptyList(),

@@ -16,7 +16,8 @@ fun SettingScreen(
     isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
     onAboutClick: () -> Unit,
-    onDarkThemeClick: (Boolean) -> Unit
+    onDarkThemeClick: (Boolean) -> Unit,
+    onNotificationClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -26,7 +27,7 @@ fun SettingScreen(
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        SettingItem(title = "Enable Notifications", onClick = { /* TODO: Add toggle later */ })
+        SettingItem(title = "Enable Notifications", onClick = onNotificationClick)
 
         SettingItem(
             title = "Dark Theme",
@@ -46,7 +47,7 @@ fun SettingItem(
     title: String,
     switchEnabled: Boolean? = null,
     onCheckedChange: ((Boolean) -> Unit)? = null,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
     Card(
         modifier = Modifier
@@ -81,7 +82,8 @@ fun SettingScreenPreview() {
         SettingScreen(
             isDarkTheme = true,
             onDarkThemeClick = {},
-            onAboutClick = {}
+            onAboutClick = {},
+            onNotificationClick = {}
         )
     }
 }

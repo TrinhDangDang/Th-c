@@ -43,7 +43,9 @@ fun ThucNavigation(
                 },
                 isDarkTheme = thucViewModel.uiState.collectAsState().value.darkTheme,
                 onCheckedChange = {alarm -> thucViewModel.toggleAlarm(alarm)},
-                onQuoteClick = {thucViewModel.getMotivationalQuote()}
+                onQuoteButtonClick = {feeling -> thucViewModel.getMotivationalQuote(feeling)},
+                onQuoteDelete = {quote -> thucViewModel.deleteQuote(quote)},
+
             )
         }
         val alarmRouteArgument = "alarmRoute"

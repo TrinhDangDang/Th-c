@@ -1,16 +1,16 @@
-package com.example.thuc.data
+package com.example.thuc.ringgg
 
 import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
-import com.example.thuc.data.Alarm
+import com.example.thuc.ringgg.AlarmReceiver
 import java.util.Date
 
 class AlarmScheduler(private val context: Context) {
@@ -51,7 +51,7 @@ class AlarmScheduler(private val context: Context) {
         val alarmIntent = Intent(context, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            alarmId,  // match the same ID used for scheduling
+            alarmId,
             alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
