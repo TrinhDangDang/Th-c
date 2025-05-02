@@ -28,15 +28,13 @@
 ---
 
 ## 📷 Screenshots
-
-![Screenshot_20250502_175917.png](../../Desktop/Screenshot_20250502_175917.png)
-![Screenshot_20250502_175938.png](../../Desktop/Screenshot_20250502_175938.png)
-![Screenshot_20250502_180720.png](../../Desktop/Screenshot_20250502_180720.png)
-![Screenshot_20250502_180735.png](../../Desktop/Screenshot_20250502_180735.png)
-![Screenshot_20250502_180907.png](../../Desktop/Screenshot_20250502_180907.png)
-![Screenshot_20250502_180941.png](../../Desktop/Screenshot_20250502_180941.png)
-![Screenshot_20250502_181026.png](../../Desktop/Screenshot_20250502_181026.png)*To be added*
-
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)
+![img_6.png](img_6.png)
 ---
 
 ## 🚀 Getting Started
