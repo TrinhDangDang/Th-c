@@ -28,13 +28,13 @@
 ---
 
 ## 📷 Screenshots
-![img.png](img.png)
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
-![img_3.png](img_3.png)
-![img_4.png](img_4.png)
-![img_5.png](img_5.png)
-![img_6.png](img_6.png)
+![Screenshot_20250502_175917.png](sampleImages/Screenshot_20250502_175917.png)
+![Screenshot_20250502_175938.png](sampleImages/Screenshot_20250502_175938.png)
+![Screenshot_20250502_180720.png](sampleImages/Screenshot_20250502_180720.png)
+![Screenshot_20250502_180735.png](sampleImages/Screenshot_20250502_180735.png)
+![Screenshot_20250502_180907.png](sampleImages/Screenshot_20250502_180907.png)
+![Screenshot_20250502_180941.png](sampleImages/Screenshot_20250502_180941.png)
+![Screenshot_20250502_181026.png](sampleImages/Screenshot_20250502_181026.png)
 ---
 
 ## 🚀 Getting Started
