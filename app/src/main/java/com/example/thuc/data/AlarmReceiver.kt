@@ -17,7 +17,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
 
         Log.d("AlarmReceiver", "🚨 Alarm triggered!")
-        Toast.makeText(context, "🚨 Alarm Triggered!", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "🚨 Alarm Triggered!", Toast.LENGTH_SHORT).show()
         val intent = Intent(context, AlarmRingActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }

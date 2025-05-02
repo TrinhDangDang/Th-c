@@ -35,6 +35,7 @@ class AlarmRingActivity : ComponentActivity() {
                             Button(onClick = {
                                 ringtone?.stop()
                                 finish()
+                                //finish() close this activity and remove it from the backstack
                             }) {
                                 Text("Dismiss")
                             }
