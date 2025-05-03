@@ -17,6 +17,8 @@ class AlarmScheduler(private val context: Context) {
 
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     fun scheduleExactAlarm(timeInMillis: Long, alarmId: Int) {
+        Log.d("AlarmScheduler", "🚨 scheduleExactAlarm CALLED with time: $timeInMillis, ID: $alarmId")
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

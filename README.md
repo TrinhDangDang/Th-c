@@ -71,6 +71,7 @@
 </p>
 <p float="left">
   <img src="sampleImages/Screenshot_20250502_181026.png" width="30%" />
+  <img src="sampleImages/Screenshot_20250502_213627.png" width="30%" />
 </p>
 
 

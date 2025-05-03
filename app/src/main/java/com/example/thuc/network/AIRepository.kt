@@ -12,7 +12,7 @@ interface AIRepository {
 
 class TogetherAIRepository(private val apiService: TogetherAiApiService): AIRepository {
     override suspend fun getQuote(prompt: String): Quote {
-        val token = "Bearer INSERT YOUR togetherAI token key here"
+        val token = ""
         val request = TogetherAIRequest(
             //model = "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free", // ✅ EXPLICITLY set
             messages = listOf(

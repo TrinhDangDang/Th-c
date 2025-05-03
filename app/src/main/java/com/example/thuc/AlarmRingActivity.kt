@@ -3,6 +3,7 @@ package com.example.thuc
 import android.os.Bundle
 import android.media.RingtoneManager
 import android.media.Ringtone
+import android.os.Build
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -110,6 +111,13 @@ class AlarmRingActivity : ComponentActivity() {
         }
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         ringtone?.stop()
